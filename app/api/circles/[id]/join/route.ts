@@ -1,0 +1,15 @@
+import { NextRequest, NextResponse } from "next/server";
+import { joinCircle } from "@/lib/circles";
+
+export async function POST(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+  const { name, address } = await req.json();
+  const circle = joinCircle(id, name, address);
+  if (!circle) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+  return NextResponse.json(circle);
+}
