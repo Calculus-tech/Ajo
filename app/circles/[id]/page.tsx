@@ -5,7 +5,6 @@ import { useParams } from "next/navigation";
 import { usePollar } from "@pollar/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WalletDrawer from "@/components/walletdrawer";
 import type { Circle } from "@/lib/circles";
 
 export default function CirclePage() {
@@ -129,25 +128,17 @@ export default function CirclePage() {
   }
 
   const paidCount = circle.members.filter((m) => m.paidThisCycle).length;
-  const poolTotal = parseFloat(circle.contributionAmount) * circle.members.length;
+  const poolTotal = parseFloat(circle.contributionAmount) * paidCount;
   const progressPct = circle.members.length
     ? (paidCount / circle.members.length) * 100
     : 0;
 
   return (
-    <div className="min-h-screen bg-[#0A0B0F] text-white">
-      <nav className="flex items-center justify-between px-6 sm:px-10 py-6 max-w-4xl mx-auto">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center font-bold text-black text-sm">
-            A
-          </div>
-          <span className="text-lg font-semibold tracking-tight">Ajo</span>
-        </div>
-        <WalletDrawer />
-      </nav>
+    <div className="min-h-screen bg-[#0A0B0F] text-white flex flex-col">
+      <Navbar />
 
-      <main className="max-w-4xl mx-auto px-6 sm:px-10 pb-24">
-        <div className="flex items-start justify-between mb-3">
+      <main className="flex-1 max-w-4xl mx-auto px-6 sm:px-10 pb-24 w-full">
+        <div className="flex items-start justify-between mb-3 pt-6">
           <div>
             <p className="text-xs font-medium text-zinc-500 uppercase tracking-wide mb-1.5">
               Circle
@@ -178,9 +169,6 @@ export default function CirclePage() {
             <p className="text-zinc-400 mb-5">
               Sign in to view and take part in this circle.
             </p>
-            <div className="inline-block">
-              <WalletDrawer />
-            </div>
           </div>
         ) : !isAdmin && !isMember ? (
           <div className="rounded-2xl border border-emerald-500/20 bg-white/[0.03] p-8 max-w-md">
@@ -395,7 +383,8 @@ export default function CirclePage() {
           </div>
         )}
       </main>
-      <footer />
+
+      <Footer />
     </div>
   );
 }
